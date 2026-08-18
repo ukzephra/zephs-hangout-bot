@@ -3,7 +3,7 @@ services:
     name: zephs-hangout-bot
     env: node
     plan: free
-    buildCommand: unzip -o zephs-hangout-bot.zip && npm install
+    buildCommand: node -e "const fs = require('fs'); const zlib = require('zlib'); if(fs.existsSync('zephs-hangout-bot.zip')){ const { execSync } = require('child_process'); execSync('tar -xf zephs-hangout-bot.zip'); }" && npm install
     startCommand: node src/commands/deploy.js && node src/index.js
     envVars:
       - key: PORT
