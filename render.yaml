@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: zephs-hangout-bot
+    env: node
+    plan: free
+    buildCommand: unzip -o zephs-hangout-bot.zip && npm install
+    startCommand: node src/commands/deploy.js && node src/index.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+        placeholder: "Paste your Discord bot token here"
+      - key: OPENAI_API_KEY
+        sync: false
+        placeholder: "Paste your OpenAI API key here (optional)"
