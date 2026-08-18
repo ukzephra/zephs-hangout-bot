@@ -3,7 +3,7 @@ services:
     name: zephs-hangout-bot
     env: node
     plan: free
-    buildCommand: node -e "const fs = require('fs'); const zlib = require('zlib'); if(fs.existsSync('zephs-hangout-bot.zip')){ const { execSync } = require('child_process'); execSync('tar -xf zephs-hangout-bot.zip'); }" && npm install
+    buildCommand: node -e "const fs = require('fs'); const { execSync } = require('child_process'); if (fs.existsSync('zephs-hangout-bot.zip')) { fs.mkdirSync('temp_extract', { recursive: true }); try { execSync('unzip zephs-hangout-bot.zip -d temp_extract'); } catch (e) { try { execSync('tar -xf zephs-hangout-bot.zip'); } catch (err) { console.error('Extraction failed: ' + err.message); process.exit(1); } } } else { console.error('ZIP file not found!'); process.exit(1); }" && (if [ -d temp_extract/src ]; then cp -r temp_extract/* .; rm -rf temp_extract; fi) && npm install
     startCommand: node src/commands/deploy.js && node src/index.js
     envVars:
       - key: PORT
